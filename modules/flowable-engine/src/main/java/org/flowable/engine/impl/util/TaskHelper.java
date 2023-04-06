@@ -201,6 +201,20 @@ public class TaskHelper {
         }
     }
 
+    public static void changeTaskAssigneeName(TaskEntity taskEntity, String assigneeName) {
+        if ((taskEntity.getAssignee() != null && !taskEntity.getAssignee().equals(assigneeName))
+                || (taskEntity.getAssignee() == null && assigneeName != null)) {
+
+            ProcessEngineConfigurationImpl processEngineConfiguration = CommandContextUtil.getProcessEngineConfiguration();
+            processEngineConfiguration.getTaskServiceConfiguration().getTaskService().changeTaskAssignee(taskEntity, assigneeName);
+            fireAssignmentEvents(taskEntity);
+
+            if (taskEntity.getId() != null) {
+                addAssigneeIdentityLinks(taskEntity);
+            }
+        }
+    }
+
     public static void changeTaskOwner(TaskEntity taskEntity, String owner) {
         if ((taskEntity.getOwner() != null && !taskEntity.getOwner().equals(owner))
                 || (taskEntity.getOwner() == null && owner != null)) {

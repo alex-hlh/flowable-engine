@@ -73,8 +73,18 @@ public class TaskServiceImpl extends CommonServiceImpl<TaskServiceConfiguration>
     }
 
     @Override
+    public void changeTaskAssigneeName(TaskEntity taskEntity, String userId) {
+        getTaskEntityManager().changeTaskAssigneeName(taskEntity, userId);
+    }
+
+    @Override
     public void changeTaskOwner(TaskEntity taskEntity, String ownerId) {
         getTaskEntityManager().changeTaskOwner(taskEntity, ownerId);
+    }
+
+    @Override
+    public void changeTaskOwnerName(TaskEntity taskEntity, String ownerId) {
+        getTaskEntityManager().changeTaskOwnerName(taskEntity, ownerId);
     }
 
     @Override

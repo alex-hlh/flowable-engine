@@ -101,7 +101,9 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
         String activeTaskFormKey = null;
         String activeTaskSkipExpression = null;
         String activeTaskAssignee = null;
+        String activeTaskAssigneeName = null;
         String activeTaskOwner = null;
+        String activeTaskOwnerName = null;
         String activeTaskIdVariableName = null;
         List<String> activeTaskCandidateUsers = null;
         List<String> activeTaskCandidateGroups = null;
@@ -118,7 +120,9 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
             activeTaskFormKey = DynamicPropertyUtil.getActiveValue(userTask.getFormKey(), DynamicBpmnConstants.USER_TASK_FORM_KEY, taskElementProperties);
             activeTaskSkipExpression = DynamicPropertyUtil.getActiveValue(userTask.getSkipExpression(), DynamicBpmnConstants.TASK_SKIP_EXPRESSION, taskElementProperties);
             activeTaskAssignee = getAssigneeValue(userTask, migrationContext, taskElementProperties);
+            activeTaskAssigneeName = getAssigneeValueName(userTask, migrationContext);
             activeTaskOwner = getOwnerValue(userTask, migrationContext, taskElementProperties);
+            activeTaskOwnerName = getOwnerName(userTask, migrationContext, taskElementProperties);
             activeTaskCandidateUsers = getActiveValueList(userTask.getCandidateUsers(), DynamicBpmnConstants.USER_TASK_CANDIDATE_USERS, taskElementProperties);
             activeTaskCandidateGroups = getActiveValueList(userTask.getCandidateGroups(), DynamicBpmnConstants.USER_TASK_CANDIDATE_GROUPS, taskElementProperties);
             activeTaskIdVariableName = DynamicPropertyUtil.getActiveValue(userTask.getTaskIdVariableName(), DynamicBpmnConstants.USER_TASK_TASK_ID_VARIABLE_NAME, taskElementProperties);
@@ -131,14 +135,16 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
             activeTaskFormKey = userTask.getFormKey();
             activeTaskSkipExpression = userTask.getSkipExpression();
             activeTaskAssignee = getAssigneeValue(userTask, migrationContext, null);
+            activeTaskAssigneeName = getAssigneeValueName(userTask, migrationContext);
             activeTaskOwner = getOwnerValue(userTask, migrationContext, null);
+            activeTaskOwnerName = getOwnerName(userTask, migrationContext, null);
             activeTaskCandidateUsers = userTask.getCandidateUsers();
             activeTaskCandidateGroups = userTask.getCandidateGroups();
             activeTaskIdVariableName = userTask.getTaskIdVariableName();
         }
         
         CreateUserTaskBeforeContext beforeContext = new CreateUserTaskBeforeContext(userTask, execution, activeTaskName, activeTaskDescription, activeTaskDueDate, 
-                        activeTaskPriority, activeTaskCategory, activeTaskFormKey, activeTaskSkipExpression, activeTaskAssignee, activeTaskOwner, 
+                        activeTaskPriority, activeTaskCategory, activeTaskFormKey, activeTaskSkipExpression, activeTaskAssignee,activeTaskAssigneeName, activeTaskOwner,activeTaskOwnerName,
                         activeTaskCandidateUsers, activeTaskCandidateGroups);
         
         if (processEngineConfiguration.getCreateUserTaskInterceptor() != null) {
@@ -164,7 +170,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
                                 task.getName() + "' created", task, execution);
             }
             
-            handleAssignments(taskService, beforeContext.getAssignee(), beforeContext.getOwner(), beforeContext.getCandidateUsers(), 
+            handleAssignments(taskService, beforeContext.getAssignee(),beforeContext.getAssigneeName(), beforeContext.getOwner(), beforeContext.getCandidateUsers(),
                             beforeContext.getCandidateGroups(), task, expressionManager, execution, processEngineConfiguration);
             
             if (processEngineConfiguration.getCreateUserTaskInterceptor() != null) {
@@ -327,7 +333,7 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
-    protected void handleAssignments(TaskService taskService, String assignee, String owner, List<String> candidateUsers,
+    protected void handleAssignments(TaskService taskService, String assignee,String assigneeName,  String owner, List<String> candidateUsers,
             List<String> candidateGroups, TaskEntity task, ExpressionManager expressionManager, DelegateExecution execution, 
             ProcessEngineConfigurationImpl processEngineConfiguration) {
 
@@ -508,6 +514,15 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
         }
     }
 
+    protected String getAssigneeValueName(UserTask userTask, MigrationContext migrationContext) {
+        if (migrationContext != null && migrationContext.getAssignee() != null) {
+            return migrationContext.getAssigneeName();
+
+        }  else {
+            return userTask.getAssigneeName();
+        }
+    }
+
     protected String getOwnerValue(UserTask userTask, MigrationContext migrationContext, ObjectNode taskElementProperties) {
         if (migrationContext != null && migrationContext.getOwner() != null) {
             return migrationContext.getOwner();
@@ -517,6 +532,18 @@ public class UserTaskActivityBehavior extends TaskActivityBehavior implements Ac
 
         } else {
             return userTask.getOwner();
+        }
+    }
+
+    protected String getOwnerName(UserTask userTask, MigrationContext migrationContext, ObjectNode taskElementProperties) {
+        if (migrationContext != null && migrationContext.getOwner() != null) {
+            return migrationContext.getOwnerName();
+
+        } else if (taskElementProperties != null) {
+            return DynamicPropertyUtil.getActiveValue(userTask.getOwnerName(), DynamicBpmnConstants.USER_TASK_OWNER, taskElementProperties);
+
+        } else {
+            return userTask.getOwnerName();
         }
     }
 }

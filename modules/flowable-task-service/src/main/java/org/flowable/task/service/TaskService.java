@@ -42,9 +42,13 @@ public interface TaskService {
     TaskQuery createTaskQuery(CommandExecutor commandExecutor, AbstractEngineConfiguration engineConfiguration);
     
     void changeTaskAssignee(TaskEntity taskEntity, String userId);
-    
+
+    void changeTaskAssigneeName(TaskEntity taskEntity, String userId);
+
     void changeTaskOwner(TaskEntity taskEntity, String ownerId);
-    
+
+    void changeTaskOwnerName(TaskEntity taskEntity, String ownerId);
+
     void updateTaskTenantIdForDeployment(String deploymentId, String tenantId);
     
     void updateTask(TaskEntity taskEntity, boolean fireUpdateEvent);

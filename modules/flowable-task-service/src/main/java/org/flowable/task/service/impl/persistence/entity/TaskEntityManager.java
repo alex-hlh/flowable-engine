@@ -33,7 +33,11 @@ public interface TaskEntityManager extends EntityManager<TaskEntity> {
 
     void changeTaskAssignee(TaskEntity taskEntity, String assignee);
 
+    void changeTaskAssigneeName(TaskEntity taskEntity, String assigneeName);
+
     void changeTaskOwner(TaskEntity taskEntity, String owner);
+
+    void changeTaskOwnerName(TaskEntity taskEntity, String ownerName);
 
     List<TaskEntity> findTasksByExecutionId(String executionId);
 

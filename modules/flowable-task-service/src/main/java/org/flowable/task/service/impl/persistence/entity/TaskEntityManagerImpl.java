@@ -128,11 +128,39 @@ public class TaskEntityManagerImpl extends AbstractTaskServiceEntityManager<Task
     }
 
     @Override
+    public void changeTaskAssigneeName(TaskEntity taskEntity, String assigneeName) {
+        if ((taskEntity.getAssignee() != null && !taskEntity.getAssignee().equals(assigneeName))
+                || (taskEntity.getAssignee() == null && assigneeName != null)) {
+
+            taskEntity.setAssigneeName(assigneeName);
+
+            if (taskEntity.getId() != null) {
+                serviceConfiguration.getInternalHistoryTaskManager().recordTaskInfoChange(taskEntity, getClock().getCurrentTime());
+                update(taskEntity);
+            }
+        }
+    }
+
+    @Override
     public void changeTaskOwner(TaskEntity taskEntity, String owner) {
         if ((taskEntity.getOwner() != null && !taskEntity.getOwner().equals(owner))
                 || (taskEntity.getOwner() == null && owner != null)) {
             
             taskEntity.setOwner(owner);
+
+            if (taskEntity.getId() != null) {
+                serviceConfiguration.getInternalHistoryTaskManager().recordTaskInfoChange(taskEntity, getClock().getCurrentTime());
+                update(taskEntity);
+            }
+        }
+    }
+
+    @Override
+    public void changeTaskOwnerName(TaskEntity taskEntity, String ownerName) {
+        if ((taskEntity.getOwner() != null && !taskEntity.getOwner().equals(ownerName))
+                || (taskEntity.getOwner() == null && ownerName != null)) {
+
+            taskEntity.setOwnerName(ownerName);
 
             if (taskEntity.getId() != null) {
                 serviceConfiguration.getInternalHistoryTaskManager().recordTaskInfoChange(taskEntity, getClock().getCurrentTime());

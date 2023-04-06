@@ -25,7 +25,9 @@ import java.util.Set;
 public class UserTask extends Task {
 
     protected String assignee;
+    protected String assigneeName;
     protected String owner;
+    protected String ownerName;
     protected String priority;
     protected String formKey;
     protected boolean sameDeployment = true;
@@ -52,6 +54,23 @@ public class UserTask extends Task {
 
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    public String getAssigneeName() {
+        return assigneeName;
+    }
+
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public String getOwner() {

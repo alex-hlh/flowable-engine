@@ -22,7 +22,7 @@
   <!-- TASK INSERT -->
 
   <insert id="insertTask" parameterType="org.flowable.task.service.impl.persistence.entity.TaskEntityImpl">
-    insert into ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_, ASSIGNEE_, DELEGATION_,
+    insert into ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_,OWNER_NAME_, ASSIGNEE_,ASSIGNEE_NAME_, DELEGATION_,
                       EXECUTION_ID_, PROC_INST_ID_, PROC_DEF_ID_, TASK_DEF_ID_, SCOPE_ID_, SUB_SCOPE_ID_, SCOPE_TYPE_, SCOPE_DEFINITION_ID_,
                       PROPAGATED_STAGE_INST_ID_, TASK_DEF_KEY_, DUE_DATE_, CATEGORY_, SUSPENSION_STATE_, TENANT_ID_, FORM_KEY_, CLAIM_TIME_,
                       IS_COUNT_ENABLED_, VAR_COUNT_, ID_LINK_COUNT_, SUB_TASK_COUNT_)
@@ -33,7 +33,9 @@
             #{priority, jdbcType=INTEGER},
             #{createTime, jdbcType=TIMESTAMP},
             #{owner, jdbcType=VARCHAR},
+            #{ownerName, jdbcType=VARCHAR},
             #{assignee, jdbcType=VARCHAR},
+            #{assigneeName, jdbcType=VARCHAR},
             #{delegationStateString, jdbcType=VARCHAR},
             #{executionId, jdbcType=VARCHAR},
             #{processInstanceId, jdbcType=VARCHAR},
@@ -59,7 +61,7 @@
   </insert>
 
   <insert id="bulkInsertTask" parameterType="java.util.List">
-    INSERT INTO ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_, ASSIGNEE_, DELEGATION_,
+    INSERT INTO ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_,OWNER_NAME_, ASSIGNEE_,ASSIGNEE_NAME_, DELEGATION_,
         EXECUTION_ID_, PROC_INST_ID_, PROC_DEF_ID_, TASK_DEF_ID_, SCOPE_ID_, SUB_SCOPE_ID_, SCOPE_TYPE_, SCOPE_DEFINITION_ID_, PROPAGATED_STAGE_INST_ID_,
         TASK_DEF_KEY_, DUE_DATE_, CATEGORY_, SUSPENSION_STATE_, TENANT_ID_, FORM_KEY_, CLAIM_TIME_,
         IS_COUNT_ENABLED_, VAR_COUNT_, ID_LINK_COUNT_, SUB_TASK_COUNT_)
@@ -72,7 +74,9 @@
          #{task.priority, jdbcType=INTEGER},
          #{task.createTime, jdbcType=TIMESTAMP},
          #{task.owner, jdbcType=VARCHAR},
+         #{task.ownerName, jdbcType=VARCHAR},
          #{task.assignee, jdbcType=VARCHAR},
+         #{task.assigneeName, jdbcType=VARCHAR},
          #{task.delegationStateString, jdbcType=VARCHAR},
          #{task.executionId, jdbcType=VARCHAR},
          #{task.processInstanceId, jdbcType=VARCHAR},
@@ -101,7 +105,7 @@
   <insert id="bulkInsertTask" databaseId="oracle" parameterType="java.util.List">
     INSERT ALL
       <foreach collection="list" item="task" index="index">
-        INTO ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_, ASSIGNEE_, DELEGATION_,
+        INTO ${prefix}ACT_RU_TASK (ID_, REV_, NAME_, PARENT_TASK_ID_, DESCRIPTION_, PRIORITY_, CREATE_TIME_, OWNER_,OWNER_NAME_, ASSIGNEE_,ASSIGNEE_NAME_, DELEGATION_,
               EXECUTION_ID_, PROC_INST_ID_, PROC_DEF_ID_, TASK_DEF_ID_, SCOPE_ID_, SUB_SCOPE_ID_, SCOPE_TYPE_, SCOPE_DEFINITION_ID_, PROPAGATED_STAGE_INST_ID_, TASK_DEF_KEY_,
               DUE_DATE_, CATEGORY_, SUSPENSION_STATE_, TENANT_ID_, FORM_KEY_, CLAIM_TIME_,
               IS_COUNT_ENABLED_, VAR_COUNT_, ID_LINK_COUNT_, SUB_TASK_COUNT_) VALUES
@@ -112,7 +116,9 @@
          #{task.priority, jdbcType=INTEGER},
          #{task.createTime, jdbcType=TIMESTAMP},
          #{task.owner, jdbcType=VARCHAR},
+         #{task.ownerName, jdbcType=VARCHAR},
          #{task.assignee, jdbcType=VARCHAR},
+         #{task.assigneeName, jdbcType=VARCHAR},
          #{task.delegationStateString, jdbcType=VARCHAR},
          #{task.executionId, jdbcType=VARCHAR},
          #{task.processInstanceId, jdbcType=VARCHAR},
@@ -160,8 +166,14 @@
       <if test="originalPersistentState.owner != owner">
           OWNER_ = #{owner, jdbcType=VARCHAR},
       </if>
+        <if test="originalPersistentState.ownerName != owner">
+            OWNER_NAME_ = #{ownerName, jdbcType=VARCHAR},
+        </if>
       <if test="originalPersistentState.assignee != assignee">
           ASSIGNEE_ = #{assignee, jdbcType=VARCHAR},
+      </if>
+      <if test="originalPersistentState.assigneeName != assigneeName">
+          ASSIGNEE_NAME_ = #{assigneeName, jdbcType=VARCHAR},
       </if>
       <if test="originalPersistentState.delegationStateString != delegationStateString">
           DELEGATION_ = #{delegationStateString, jdbcType=VARCHAR},
@@ -294,7 +306,9 @@
     <result property="priority" column="PRIORITY_" jdbcType="INTEGER"/>
     <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP" />
     <result property="owner" column="OWNER_" jdbcType="VARCHAR"/>
+    <result property="ownerName" column="OWNER_NAME_" jdbcType="VARCHAR"/>
     <result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR"/>
+    <result property="assigneeName" column="ASSIGNEE_NAME_" jdbcType="VARCHAR"/>
     <result property="delegationStateString" column="DELEGATION_" jdbcType="VARCHAR"/>
     <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR" />
     <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
@@ -327,7 +341,9 @@
     <result property="priority" column="PRIORITY_" jdbcType="INTEGER"/>
     <result property="createTime" column="CREATE_TIME_" jdbcType="TIMESTAMP" />
     <result property="owner" column="OWNER_" jdbcType="VARCHAR"/>
+    <result property="ownerName" column="OWNER_NAME_" jdbcType="VARCHAR"/>
     <result property="assignee" column="ASSIGNEE_" jdbcType="VARCHAR"/>
+    <result property="assigneeName" column="ASSIGNEE_NAME_" jdbcType="VARCHAR"/>
     <result property="delegationStateString" column="DELEGATION_" jdbcType="VARCHAR"/>
     <result property="executionId" column="EXECUTION_ID_" jdbcType="VARCHAR" />
     <result property="processInstanceId" column="PROC_INST_ID_" jdbcType="VARCHAR" />
@@ -528,6 +544,12 @@
       <if test="assigneeLike != null">
         and RES.ASSIGNEE_ like #{assigneeLike}${wildcardEscapeClause}
       </if>
+    <if test="assigneeName != null">
+        and RES.ASSIGNEE_NAME_ = #{assigneeName}
+    </if>
+    <if test="assigneeNameLike != null">
+        and RES.ASSIGNEE_NAME_ like #{assigneeNameLike}${wildcardEscapeClause}
+    </if>
       <if test="assigneeLikeIgnoreCase != null">
         and lower(RES.ASSIGNEE_) like #{assigneeLikeIgnoreCase}${wildcardEscapeClause}
       </if>
@@ -544,6 +566,12 @@
       <if test="ownerLike != null">
         and RES.OWNER_ like #{ownerLike}${wildcardEscapeClause}
       </if>
+        <if test="ownerName != null">
+            and RES.OWNER_NAME_ = #{ownerName}
+        </if>
+        <if test="ownerNameLike != null">
+            and RES.OWNER_NAME_ like #{ownerNameLike}${wildcardEscapeClause}
+        </if>
        <if test="ownerLikeIgnoreCase != null">
         and lower(RES.OWNER_) like #{ownerLikeIgnoreCase}${wildcardEscapeClause}
       </if>

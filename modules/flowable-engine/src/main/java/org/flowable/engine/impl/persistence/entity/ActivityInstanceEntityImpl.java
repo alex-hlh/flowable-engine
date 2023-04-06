@@ -42,6 +42,7 @@ public class ActivityInstanceEntityImpl extends AbstractBpmnEngineEntity impleme
     protected String activityType;
     protected String executionId;
     protected String assignee;
+    protected String assigneeName;
     protected String taskId;
     protected String calledProcessInstanceId;
     protected String tenantId = ProcessEngineConfiguration.NO_TENANT_ID;
@@ -60,6 +61,7 @@ public class ActivityInstanceEntityImpl extends AbstractBpmnEngineEntity impleme
         persistentState.put("executionId", executionId);
         persistentState.put("taskId", taskId);
         persistentState.put("assignee", assignee);
+        persistentState.put("assigneeName", assigneeName);
         persistentState.put("calledProcessInstanceId", calledProcessInstanceId);
         persistentState.put("activityId", activityId);
         persistentState.put("activityName", activityName);
@@ -195,8 +197,18 @@ public class ActivityInstanceEntityImpl extends AbstractBpmnEngineEntity impleme
     }
 
     @Override
+    public String getAssigneeName() {
+        return assigneeName;
+    }
+
+    @Override
     public void setAssignee(String assignee) {
         this.assignee = assignee;
+    }
+
+    @Override
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
     }
 
     @Override

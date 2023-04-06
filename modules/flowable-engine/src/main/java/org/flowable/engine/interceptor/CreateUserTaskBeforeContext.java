@@ -30,7 +30,9 @@ public class CreateUserTaskBeforeContext {
     protected String formKey;
     protected String skipExpression;
     protected String assignee;
+    protected String assigneeName;
     protected String owner;
+    protected String ownerName;
     protected List<String> candidateUsers;
     protected List<String> candidateGroups;
     
@@ -39,7 +41,7 @@ public class CreateUserTaskBeforeContext {
     }
 
     public CreateUserTaskBeforeContext(UserTask userTask, DelegateExecution execution, String name, String description, String dueDate, 
-                    String priority, String category, String formKey, String skipExpression, String assignee, String owner, 
+                    String priority, String category, String formKey, String skipExpression, String assignee,String assigneeName, String owner,String ownerName,
                     List<String> candidateUsers, List<String> candidateGroups) {
 
         this.userTask = userTask;
@@ -52,7 +54,9 @@ public class CreateUserTaskBeforeContext {
         this.formKey = formKey;
         this.skipExpression = skipExpression;
         this.assignee = assignee;
+        this.assigneeName = assigneeName;
         this.owner = owner;
+        this.ownerName = ownerName;
         this.candidateUsers = candidateUsers;
         this.candidateGroups = candidateGroups;
     }
@@ -137,12 +141,28 @@ public class CreateUserTaskBeforeContext {
         this.assignee = assignee;
     }
 
+    public String getAssigneeName() {
+        return assigneeName;
+    }
+
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+    }
+
     public String getOwner() {
         return owner;
     }
 
     public void setOwner(String owner) {
         this.owner = owner;
+    }
+
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName = ownerName;
     }
 
     public List<String> getCandidateUsers() {

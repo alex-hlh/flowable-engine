@@ -123,6 +123,15 @@ public interface DelegateTask extends VariableScope {
     /** The user id of the person responsible for this task. */
     void setOwner(String owner);
 
+
+    String getAssigneeName();
+
+    void setAssigneeName(String assigneeName);
+
+    String getOwnerName();
+
+    void setOwnerName(String assigneeName);
+
     /**
      * The user id of the person to which this task is delegated.
      */

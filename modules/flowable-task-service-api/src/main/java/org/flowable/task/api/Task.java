@@ -47,6 +47,10 @@ public interface Task extends TaskInfo {
      */
     void setOwner(String owner);
 
+    void setOwnerName(String ownerName);
+
+    void setAssigneeName(String assigneeName);
+
     /**
      * The user id of the person to which this task is delegated.
      */

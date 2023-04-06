@@ -63,9 +63,11 @@ public class TaskEntityImpl extends AbstractTaskServiceVariableScopeEntity imple
     private static final long serialVersionUID = 1L;
 
     protected String owner;
+    protected String ownerName;
     protected int assigneeUpdatedCount; // needed for v5 compatibility
     protected String originalAssignee; // needed for v5 compatibility
     protected String assignee;
+    protected String assigneeName;
     protected DelegationState delegationState;
 
     protected String parentTaskId;
@@ -119,7 +121,9 @@ public class TaskEntityImpl extends AbstractTaskServiceVariableScopeEntity imple
     public Object getPersistentState() {
         Map<String, Object> persistentState = new HashMap<>();
         persistentState.put("assignee", this.assignee);
+        persistentState.put("assigneeName", this.assigneeName);
         persistentState.put("owner", this.owner);
+        persistentState.put("ownerName", this.ownerName);
         persistentState.put("name", this.name);
         persistentState.put("priority", this.priority);
         persistentState.put("category", this.category);
@@ -279,13 +283,33 @@ public class TaskEntityImpl extends AbstractTaskServiceVariableScopeEntity imple
         this.description = description;
     }
 
+    public String getAssigneeName() {
+        return assigneeName;
+    }
+
+    public void setAssigneeName(String assigneeName) {
+        this.assigneeName = assigneeName;
+        assigneeUpdatedCount++;
+    }
+
     @Override
     public void setAssignee(String assignee) {
         this.originalAssignee = this.assignee;
         this.assignee = assignee;
         assigneeUpdatedCount++;
     }
-    
+
+    @Override
+    public String getOwnerName() {
+        return ownerName;
+    }
+
+    @Override
+    public void setOwnerName(String assigneeName) {
+        this.ownerName = ownerName;
+        assigneeUpdatedCount++;
+    }
+
     @Override
     public void setAssigneeValue(String assignee) {
         InternalTaskAssignmentManager taskAssignmentManager = getTaskAssignmentManager();
